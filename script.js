@@ -13,8 +13,12 @@ const addressWarn = document.getElementById("address-warn")
 cartBtn.addEventListener("click", function(){
     carttModal.style.display = "flex"
 })
+
 carttModal.addEventListener("click", function(event){
     if(event.target === carttModal){
         carttModal.style.display = "none"
     }
+})
+closeModalBtn.addEventListener("click", function(){
+    carttModal.style.display = "none"
 })
