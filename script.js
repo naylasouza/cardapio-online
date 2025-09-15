@@ -123,11 +123,23 @@ addressInput.addEventListener("input", function(event){
 })
 
 checkoutBtn.addEventListener("click", function(){
-    // const isOpen = checkRestaurantOpen();
-    // if(!isOpen){
-    //     alert("ESTAMOS FECHADOS")
-    //     return
-    // }
+     const isOpen = checkRestaurantOpen();
+     if(!isOpen){
+        Toastify({
+            text: "Restaurante esta fechado",
+            duration: 3000,
+            destination: "https://github.com/apvarun/toastify-js",
+            newWindow: true,
+            close: true,
+            gravity: "top",
+            position: "right",
+            stopOnFocus: true,
+            style: {
+                background: "##ef4444",
+            },
+            }).showToast();
+        return
+     }
 
     if(cart.length === 0) return;
     if(addressInput.value === ""){
