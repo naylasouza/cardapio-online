@@ -64,15 +64,15 @@ function updateCartModal(){
         cartItemElement.classList.add("flex", "justify-between", "mb-4", "flex-col")
 
         cartItemElement.innerHTML = `
-            <div class= "flex items-center justify-between"> 
+            <div class="flex items-center justify-between"> 
                 <div>
-                    <p class= "font-medium">${item.name}</p>
+                    <p class="font-medium">${item.name}</p>
                     <p>Qtd: ${item.quantity}</p>
                     <p class="font-medium mt-2"> R$ ${item.price.toFixed(2)}</p>
                 </div>
             
                 <button class="remove-from-cart-btn" data-name="${item.name}">Remover</button>
-            <div>
+            </div> 
         `
         total += item.price * item.quantity
 
@@ -123,11 +123,30 @@ addressInput.addEventListener("input", function(event){
 })
 
 checkoutBtn.addEventListener("click", function(){
+    // const isOpen = checkRestaurantOpen();
+    // if(!isOpen){
+    //     alert("ESTAMOS FECHADOS")
+    //     return
+    // }
+
     if(cart.length === 0) return;
     if(addressInput.value === ""){
         addressWarn.classList.remove("hidden")
         addressInput.classList.add("border-red-500")
+        return
     }
+
+    const cartItems = cart.map((item) => {
+        return(
+            ` ${item.name} Quantidade: (${item.quantity}) Preço: R$${item.price} |`
+        )
+    }).join("")
+
+    const message = encodeURIComponent(cartItems)
+    const phone = "13974120087"
+
+    window.open(`https://wa.me/${phone}?text=${message} Endereço: ${addressInput.value}`, "_blank")
+
 })
 
 function checkRestaurantOpen(){
