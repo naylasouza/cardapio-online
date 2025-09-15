@@ -3,10 +3,10 @@ const cartBtn = document.getElementById("cart-btn")
 const carttModal = document.getElementById("cart-modal")
 const cartItemsContainer = document.getElementById("cart-items")
 const cartTotal = document.getElementById("cart-total")
-const checkoutBtn = document.getElementById("close-modal-btn")
+const checkoutBtn = document.getElementById("ckeckout-btn")
 const closeModalBtn = document.getElementById("close-modal-btn")
 const cartCounter = document.getElementById("cart-count")
-const addressImput = document.getElementById("address")
+const addressInput = document.getElementById("address")
 const addressWarn = document.getElementById("address-warn")
 
 let cart = [];
@@ -71,7 +71,7 @@ function updateCartModal(){
                     <p class="font-medium mt-2"> R$ ${item.price.toFixed(2)}</p>
                 </div>
             
-                <button>Remover</button>
+                <button class="remove-from-cart-btn" data-name="${item.name}">Remover</button>
             <div>
         `
         total += item.price * item.quantity
@@ -85,4 +85,64 @@ function updateCartModal(){
     });
 
     cartCounter.innerText = cart.length;
+}
+
+    cartItemsContainer.addEventListener("click", function (event){
+        if(event.target.classList.contains("remove-from-cart-btn")){
+            const name = event.target.getAttribute("data-name")
+
+            removeItemCart(name);
+        }
+    })
+
+    function removeItemCart(name){
+        const index = cart.findIndex(item => item.name === name);
+
+        if(index !== -1){
+            const item = cart[index];
+
+            if(item.quantity > 1){
+                item.quantity -= 1;
+                updateCartModal();
+                return;
+            }
+
+            cart.splice(index, 1);
+            updateCartModal();
+            
+        }
+    }
+
+
+addressInput.addEventListener("input", function(event){
+    let inputValue = event.target.value;
+    if(inputValue !== ""){
+        addressInput.classList.remove("border-red-500")
+        addressWarn.classList.add("hidden")
+    }
+})
+
+checkoutBtn.addEventListener("click", function(){
+    if(cart.length === 0) return;
+    if(addressInput.value === ""){
+        addressWarn.classList.remove("hidden")
+        addressInput.classList.add("border-red-500")
+    }
+})
+
+function checkRestaurantOpen(){
+    const data = new Date();
+    const hora = data.getHours();
+    return hora >= 18 && hora < 23
+}
+
+const spanItem = document.getElementById("date-span")
+const isOpen = checkRestaurantOpen();
+
+if(isOpen){
+    spanItem.classList.remove("bg-red-500");
+    spanItem.closeModalBtn.add("bg-green-600")
+}else{
+    spanItem.classList.remove("bg-green-600");
+    spanItem.classList.add("bg-red-500")
 }
